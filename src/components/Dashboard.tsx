@@ -3,27 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, AlertTriangle, FileText } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchStats, fetchHearings, fetchUrgentTasks } from "@/api";
 
 export const Dashboard = () => {
-  // Mock data - in real app this would come from API
-  const stats = {
-    activeCases: 45,
-    weeklyHearings: 8,
-    openTasks: 12,
-    frozenCases: 3
-  };
-
-  const upcomingHearings = [
-    { date: "2025-01-20", caseNumber: "1033/25", subject: "הרחבת בניין", status: "scheduled" },
-    { date: "2025-01-22", caseNumber: "8034/23", subject: "היטל השבחה", status: "scheduled" },
-    { date: "2025-01-25", caseNumber: "2156/24", subject: "תוספת קומה", status: "scheduled" },
-  ];
-
-  const urgentTasks = [
-    { title: "עדכון שמאי מכריע", caseNumber: "8034/23", priority: "urgent" },
-    { title: "שליחת זימון לדיון", caseNumber: "1033/25", priority: "high" },
-    { title: "הכנת פרוטוקול", caseNumber: "8075/24", priority: "medium" },
-  ];
+  const { data: stats } = useQuery({ queryKey: ['stats'], queryFn: fetchStats });
+  const { data: upcomingHearings = [] } = useQuery({ queryKey: ['hearings'], queryFn: fetchHearings });
+  const { data: urgentTasks = [] } = useQuery({ queryKey: ['urgentTasks'], queryFn: fetchUrgentTasks });
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {

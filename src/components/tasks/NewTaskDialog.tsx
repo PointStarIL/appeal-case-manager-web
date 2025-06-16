@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Save, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { createTask } from "@/api";
 
 interface NewTaskDialogProps {
   open: boolean;
@@ -29,11 +30,10 @@ export const NewTaskDialog = ({ open, onOpenChange }: NewTaskDialogProps) => {
   const users = ["משתמש 1", "משתמש 2", "משתמש 3"];
   const cases = ["1033/25", "8034/23", "8075/24", "2156/24"];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Here you would typically save to your backend
-    console.log("Saving new task:", formData);
+
+    await createTask(formData);
     
     toast({
       title: "משימה נוצרה בהצלחה",

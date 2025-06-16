@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, X, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { createCase } from "@/api";
 
 interface LicensingAppealFormProps {
   onClose: () => void;
@@ -58,10 +59,13 @@ export const LicensingAppealForm = ({ onClose }: LicensingAppealFormProps) => {
     setRespondents(respondents.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically save to your backend
-    console.log("Saving licensing appeal:", { formData, appellants, respondents });
+    await createCase({
+      ...formData,
+      appellants: JSON.stringify(appellants),
+      respondents: JSON.stringify(respondents)
+    });
     
     toast({
       title: "תיק נשמר בהצלחה",

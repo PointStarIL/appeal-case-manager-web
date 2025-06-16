@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, X, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { createCase } from "@/api";
 
 interface BettermentTaxAppealFormProps {
   onClose: () => void;
@@ -61,10 +62,14 @@ export const BettermentTaxAppealForm = ({ onClose }: BettermentTaxAppealFormProp
     setRespondents(respondents.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically save to your backend
-    console.log("Saving betterment tax appeal:", { formData, assessors, appellants, respondents });
+    await createCase({
+      ...formData,
+      assessors: JSON.stringify(assessors),
+      appellants: JSON.stringify(appellants),
+      respondents: JSON.stringify(respondents)
+    });
     
     toast({
       title: "תיק נשמר בהצלחה",

@@ -1,5 +1,7 @@
 
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCases } from "@/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,45 +15,7 @@ export const CasesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
-  // Mock data - in real app this would come from API
-  const cases = [
-    {
-      id: 1,
-      appealNumber: "1033/25",
-      appellants: "גלנסקי ל.",
-      subject: "הרחבת בניין",
-      status: "פעיל",
-      nextHearing: "2025-01-20",
-      type: "רישוי"
-    },
-    {
-      id: 2,
-      appealNumber: "8034/23",
-      appellants: "גולדמן ר.",
-      subject: "היטל השבחה",
-      status: "מוקפא",
-      nextHearing: "טרם נקבע",
-      type: "היטל השבחה"
-    },
-    {
-      id: 3,
-      appealNumber: "8075/24",
-      appellants: "טור ז.",
-      subject: "היטל השבחה",
-      status: "נסגר",
-      nextHearing: "הושלם",
-      type: "היטל השבחה"
-    },
-    {
-      id: 4,
-      appealNumber: "2156/24",
-      appellants: "כהן א.",
-      subject: "תוספת קומה",
-      status: "פעיל",
-      nextHearing: "2025-01-25",
-      type: "רישוי"
-    }
-  ];
+  const { data: cases = [] } = useQuery({ queryKey: ['cases'], queryFn: fetchCases });
 
   const getStatusColor = (status: string) => {
     switch (status) {
