@@ -1,5 +1,7 @@
 
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchTasks } from "@/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,53 +14,7 @@ export const TasksPage = () => {
   const [showNewTaskDialog, setShowNewTaskDialog] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
 
-  // Mock data - in real app this would come from API
-  const tasks = [
-    {
-      id: 1,
-      title: "עדכון שמאי מכריע",
-      description: "לעדכן פרטי שמאי מכריע בתיק",
-      caseNumber: "8034/23",
-      assignedTo: "משתמש 1",
-      priority: "urgent",
-      status: "פתוחה",
-      dueDate: "2025-01-20",
-      createdDate: "2025-01-15"
-    },
-    {
-      id: 2,
-      title: "שליחת זימון לדיון",
-      description: "לשלוח זימון לכל הצדדים לדיון",
-      caseNumber: "1033/25",
-      assignedTo: "משתמש 2",
-      priority: "high",
-      status: "בטיפול",
-      dueDate: "2025-01-22",
-      createdDate: "2025-01-16"
-    },
-    {
-      id: 3,
-      title: "הכנת פרוטוקול",
-      description: "להכין פרוטוקול מהדיון הקודם",
-      caseNumber: "8075/24",
-      assignedTo: "משתמש 1",
-      priority: "medium",
-      status: "הושלמה",
-      dueDate: "2025-01-18",
-      createdDate: "2025-01-10"
-    },
-    {
-      id: 4,
-      title: "בדיקת מסמכים",
-      description: "לבדוק שלמות המסמכים בתיק",
-      caseNumber: "2156/24",
-      assignedTo: "משתמש 2",
-      priority: "low",
-      status: "פתוחה",
-      dueDate: "2025-01-25",
-      createdDate: "2025-01-17"
-    }
-  ];
+  const { data: tasks = [] } = useQuery({ queryKey: ['tasks'], queryFn: fetchTasks });
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
